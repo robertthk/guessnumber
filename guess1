@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3em; /* Title font size */
+        }
+        .winning-message {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: red;
+            font-size: 3em; /* Same font size as title */
+            margin-top: 20px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .balloon {
+            width: 200px;
+            margin: 20px 0;
+        }
+        .range-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em; /* Increased font size */
+            color: #ff4500;
+            margin: 20px 0;
+        }
+        .range-number {
+            margin: 0 20px; /* Spacing between numbers and balloon */
+        }
+    </style>
+</head>
+<body>
+    <h1>Number Guessing Game</h1>
+    <p>Please enter a number within the range:</p>
+    <input type="number" id="userInput" />
+    <button onclick="makeGuess()">Guess</button>
+    
+    <div class="range-display">
+        <span id="lowerRange" class="range-number">1</span>
+        <img src="https://media.istockphoto.com/id/857735718/vector/blue-realistic-balloon.jpg?s=612x612&w=0&k=20&c=3NaZNldCWJ1S2PuIzKoMnTJk6-SGibQgCxenkhsJDlY=" alt="Balloon" class="balloon" id="balloonImage">
+        <span id="upperRange" class="range-number">100</span>
+    </div>
+
+    <div class="message" id="message"></div>
+    <div class="winning-message" id="winningMessage" style="display: none;"></div>
+
+    <script>
+        let low = 1;
+        let high = 100;
+        const targetNumber = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
+
+        document.getElementById('lowerRange').textContent = low;
+        document.getElementById('upperRange').textContent = high;
+
+        function makeGuess() {
+            const userInput = document.getElementById('userInput').value;
+            const messageElement = document.getElementById('message');
+            const winningMessageElement = document.getElementById('winningMessage');
+
+            if (!userInput) {
+                messageElement.textContent = "Invalid input. You have not entered a number. Enter a number.";
+                return;
+            }
+
+            const guess = parseInt(userInput);
+
+            if (guess < low || guess > high) {
+                messageElement.textContent = "Invalid input. Your input number is outside range, enter a number within the range.";
+                return;
+            }
+
+            if (guess < targetNumber) {
+                low = guess + 1;
+                messageElement.textContent = `Sorry, good try. The new range is ${low} to ${high}. Try again!`;
+            } else if (guess > targetNumber) {
+                high = guess - 1;
+                messageElement.textContent = `Sorry, good try. The new range is ${low} to ${high}. Try again!`;
+            } else {
+                winningMessageElement.textContent = `Congratulations, The correct answer is ${targetNumber}.`;
+                winningMessageElement.style.display = 'block'; // Show winning message
+                messageElement.textContent = ""; // Clear any previous messages
+                document.getElementById('lowerRange').style.display = 'none'; // Hide lower range
+                document.getElementById('upperRange').style.display = 'none'; // Hide upper range
+                document.getElementById('balloonImage').style.display = 'none'; // Hide balloon image
+                document.getElementById('userInput').value = ''; // Clear input
+            }
+
+            document.getElementById('lowerRange').textContent = low;
+            document.getElementById('upperRange').textContent = high;
+        }
+    </script>
+</body>
+</html>
